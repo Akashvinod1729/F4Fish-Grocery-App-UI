@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:grocery_app/presentation/controller/product_controller.dart';
+
 import '../../styles/themes.dart';
 import '../styles/colors.dart';
 
 class ItemCounterWidget extends StatefulWidget {
   final Function? onAmountChanged;
+  final int? quantity;
+  final Function? onIncrement;
+  final Function? onDecrement;
 
-  const ItemCounterWidget({Key? key,  this.onAmountChanged})
+  const ItemCounterWidget(
+      {Key? key,
+      this.onAmountChanged,
+      this.quantity,
+      this.onIncrement,
+      this.onDecrement})
       : super(key: key);
 
   @override
@@ -23,20 +32,22 @@ class _ItemCounterWidgetState extends State<ItemCounterWidget> {
     return Row(
       children: [
         iconWidget(Icons.remove,
-            iconColor:Colors.green.shade700,
-            onPressed: () => controller.decrementQuantity()),
+            iconColor: Colors.green.shade700,
+            onPressed: () =>
+                widget.onDecrement == null ? {} : widget.onDecrement!()),
         SizedBox(width: 10),
         Container(
             width: 30,
             child: Center(
-                child: Obx(() => getText(
-                    text: controller.quantityCount.value.toString(),
+                child: getText(
+                    text: "${widget.quantity ?? "0"}",
                     fontSize: 18,
-                    isBold: true)))),
+                    isBold: true))),
         SizedBox(width: 10),
         iconWidget(Icons.add,
             iconColor: Colors.green.shade700,
-            onPressed: () => controller.incrementQuantity())
+            onPressed: () =>
+                widget.onIncrement == null ? {} : widget.onIncrement!())
       ],
     );
   }
@@ -45,11 +56,9 @@ class _ItemCounterWidgetState extends State<ItemCounterWidget> {
       {required Color iconColor, required Function onPressed}) {
     return GestureDetector(
       onTap: () {
-
         debugPrint("pressing");
         debugPrint("pressing91");
         onPressed();
-
       },
       child: Container(
         height: 30,
@@ -75,7 +84,7 @@ class _ItemCounterWidgetState extends State<ItemCounterWidget> {
       {required String text,
       required double fontSize,
       bool isBold = false,
-        color = Colors.green}) {
+      color = Colors.green}) {
     return Text(
       text,
       style: TextStyle(
@@ -131,11 +140,9 @@ class _ItemCounterWidgetNewState extends State<ItemCounterWidgetNew> {
       {required Color iconColor, required Function onPressed}) {
     return GestureDetector(
       onTap: () {
-
         debugPrint("pressing");
         debugPrint("pressing91");
         onPressed();
-
       },
       child: Container(
         height: 30,
@@ -176,8 +183,7 @@ class _ItemCounterWidgetNewState extends State<ItemCounterWidgetNew> {
 class ItemAddWidget extends StatelessWidget {
   final Function? onAmountChanged;
 
-   ItemAddWidget({Key? key,  this.onAmountChanged})
-      : super(key: key);
+  ItemAddWidget({Key? key, this.onAmountChanged}) : super(key: key);
 
   int amount = 1;
 
@@ -186,16 +192,18 @@ class ItemAddWidget extends StatelessWidget {
     final controller = Get.find<ProductController>();
     return Center(
       child: GestureDetector(
-        onTap: ()=> controller.incrementQuantity(),
-        child: Container(
-          height: 30,
-            width: 120,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(5)),
-              color: Colors.green.shade700
-            ),
-            child: Center(
-                child: Text("ADD",style: Add,)))),
+          onTap: () => onAmountChanged == null ? {} : onAmountChanged!(),
+          child: Container(
+              height: 30,
+              width: 120,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                  color: Colors.green.shade700),
+              child: Center(
+                  child: Text(
+                "ADD",
+                style: Add,
+              )))),
     );
   }
 
@@ -203,11 +211,9 @@ class ItemAddWidget extends StatelessWidget {
       {required Color iconColor, required Function onPressed}) {
     return GestureDetector(
       onTap: () {
-
         debugPrint("pressing");
         debugPrint("pressing91");
         onPressed();
-
       },
       child: Container(
         height: 30,
@@ -231,9 +237,9 @@ class ItemAddWidget extends StatelessWidget {
 
   Widget getText(
       {required String text,
-        required double fontSize,
-        bool isBold = false,
-        color = Colors.green}) {
+      required double fontSize,
+      bool isBold = false,
+      color = Colors.green}) {
     return Text(
       text,
       style: TextStyle(

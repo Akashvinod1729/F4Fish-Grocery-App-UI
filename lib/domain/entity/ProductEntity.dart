@@ -106,29 +106,32 @@ class QuantityVariant1 extends Equatable {
   List<Object?> get props => [id, variantName, price];
 }*/
 
-class QuantityVariant extends Equatable{
+class QuantityVariant extends Equatable {
   int? id;
   String? variantName;
   dynamic variantImage;
- final SizeVariant sizeVariant;
-
+  final SizeVariant sizeVariant;
 
   QuantityVariant(
-      {this.id, this.variantName, this.variantImage, required this.sizeVariant});
+      {this.id,
+      this.variantName,
+      this.variantImage,
+      required this.sizeVariant});
 
-  factory QuantityVariant.fromJson(Map<String, dynamic> json) => QuantityVariant(
-    id: json["id"],
-    variantName: json["variant_name"],
-    variantImage: json["variant_image"],
-    sizeVariant: SizeVariant.fromJson(json["size_variant"]),
-  );
+  factory QuantityVariant.fromJson(Map<String, dynamic> json) =>
+      QuantityVariant(
+        id: json["id"],
+        variantName: json["variant_name"],
+        variantImage: json["variant_image"],
+        sizeVariant: SizeVariant.fromJson(json["size_variant"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "variant_name": variantName,
-    "variant_image": variantImage,
-    "size_variant": sizeVariant.toJson(),
-  };
+        "id": id,
+        "variant_name": variantName,
+        "variant_image": variantImage,
+        "size_variant": sizeVariant.toJson(),
+      };
 
   @override
   // TODO: implement props

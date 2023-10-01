@@ -9,14 +9,12 @@ import 'package:grocery_app/presentation/screens/product_details/favourite_toggl
 import 'package:grocery_app/presentation/widgets/big_text.dart';
 import 'package:grocery_app/presentation/widgets/item_counter_widget.dart';
 import 'package:grocery_app/styles/colors.dart';
+
 import '../../../app_constants.dart';
 import '../../../core/response_classify.dart';
 import '../../../injecter.dart';
 import '../../../styles/themes.dart';
-import '../../styles/colors.dart';
 import '../../widgets/buttons.dart';
-import '../../widgets/shimmer_widget.dart';
-import '../../widgets/sub_Item_widget.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   final ProductEntity groceryItem;
@@ -32,11 +30,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
   int amount = 1;
   int newAmount = 0;
   final controller =
-  Get.put(ProductController(sl(), sl(), sl(), sl(), sl(), sl(), sl()));
+      Get.put(ProductController(sl(), sl(), sl(), sl(), sl(), sl(), sl()));
   final cartController = Get.put(CartController(sl(), sl(), sl()));
   late Animation _heartAnimation;
   late AnimationController _animationController;
-
 
   @override
   void initState() {
@@ -49,47 +46,53 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
 
   @override
   Widget build(BuildContext context) {
-
-
     return SafeArea(
-      child: Scaffold(
-        extendBodyBehindAppBar: true, // Make the app bar transparent
-        appBar: AppBar(
-          elevation:0,
-          automaticallyImplyLeading:false,
-          backgroundColor: Colors.transparent,
-          title: backButtonAvatar(),
-          actions: [
-            Heart(),
-            shareButton(),
-            cartButton() ,
-            SizedBox(width: 10)
-          ],
-        ),
-        body: Stack(
-          children: [
-            SingleChildScrollView(
-              child: DefaultTabController(
-                length: 2,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    /// Image of the product
-                    getImageHeaderWidget(widget.groceryItem),
-                   Padding(
-                     padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 15),
-                     child: Column(
-                       crossAxisAlignment: CrossAxisAlignment.start,
-                       children: [
-                         ///Productname
-                         Text(
-                           widget.groceryItem.name,
-                           style: productDetailHeading,),
-                        spacer20,
-                         Text(widget.groceryItem.sellingPrice.toString()+" / "+widget
-                             .groceryItem.quantityType[0].variantName.toString(),style: quantityTypeDetailHeading,textAlign: TextAlign.end,),
+        child: Scaffold(
+            extendBodyBehindAppBar: true, // Make the app bar transparent
+            appBar: AppBar(
+              elevation: 0,
+              automaticallyImplyLeading: false,
+              backgroundColor: Colors.transparent,
+              title: backButtonAvatar(),
+              actions: [
+                Heart(),
+                shareButton(),
+                cartButton(),
+                SizedBox(width: 10)
+              ],
+            ),
+            body: Stack(children: [
+              SingleChildScrollView(
+                child: DefaultTabController(
+                  length: 2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      /// Image of the product
+                      getImageHeaderWidget(widget.groceryItem),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 15),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              ///Productname
+                              Text(
+                                widget.groceryItem.name,
+                                style: productDetailHeading,
+                              ),
+                              spacer20,
+                              Text(
+                                widget.groceryItem.sellingPrice.toString() +
+                                    " / " +
+                                    widget
+                                        .groceryItem.quantityType[0].variantName
+                                        .toString(),
+                                style: quantityTypeDetailHeading,
+                                textAlign: TextAlign.end,
+                              ),
 
-                         /*///size type
+                              /*///size type
                          Text(
                             widget
                                .groceryItem.sizeType.toString(),
@@ -99,188 +102,284 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
                              color: Colors.black,
                            ),
                          ),*/
-                         SizedBox(
-                           height: 12,
-                         ),
+                              SizedBox(
+                                height: 12,
+                              ),
 
-                         /// Tab Bar view
+                              /// Tab Bar view
 
-                         TabBar(
-                           tabs: [
-                             Tab(child: BigText(text: "Custamize",color: Colors.black87,size: 20,)),
-                             Tab(child: BigText(text: "About",color: Colors.black87,size: 20,)),
-                           ],
-                         ),
+                              TabBar(
+                                tabs: [
+                                  Tab(
+                                      child: BigText(
+                                    text: "Custamize",
+                                    color: Colors.black87,
+                                    size: 20,
+                                  )),
+                                  Tab(
+                                      child: BigText(
+                                    text: "About",
+                                    color: Colors.black87,
+                                    size: 20,
+                                  )),
+                                ],
+                              ),
 
-                         Container(
-                           height: widget
-                               .groceryItem.quantityType.length<2?350.0:widget
-                               .groceryItem.quantityType.length.toDouble()*200,
-                           width: double.infinity,
-                           child: TabBarView(
-                               clipBehavior:Clip.none,
-                               physics: NeverScrollableScrollPhysics(),
-                               children: [
-                                 ListView.builder(
-                                     physics: NeverScrollableScrollPhysics(),
-                                     shrinkWrap: true,
+                              Container(
+                                height:
+                                    widget.groceryItem.quantityType.length < 2
+                                        ? 350.0
+                                        : widget.groceryItem.quantityType.length
+                                                .toDouble() *
+                                            200,
+                                width: double.infinity,
+                                child: TabBarView(
+                                    clipBehavior: Clip.none,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    children: [
+                                      ListView.builder(
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
+                                          shrinkWrap: true,
+                                          itemCount: widget
+                                              .groceryItem.quantityType.length,
+                                          itemBuilder: (context, index) {
+                                            var item = widget.groceryItem
+                                                .quantityType[index];
+                                            return GestureDetector(
+                                                onTap: () {},
+                                                child: Container(
+                                                  height: 160,
+                                                  width: double.infinity,
+                                                  padding: EdgeInsets.all(10),
+                                                  margin: EdgeInsets.symmetric(
+                                                      vertical: 8,
+                                                      horizontal: 8),
+                                                  decoration: BoxDecoration(
+                                                    color: Colors.white,
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.circular(10),
+                                                    ),
+                                                    border: Border.all(
+                                                        color: Colors
+                                                            .grey.shade100),
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color: Colors
+                                                            .grey.shade200,
+                                                        offset: const Offset(
+                                                          10.0,
+                                                          1.50,
+                                                        ),
+                                                        blurRadius: 10.0,
+                                                        spreadRadius: 2.0,
+                                                      ),
+                                                      BoxShadow(
+                                                        color:
+                                                            Colors.grey.shade50,
+                                                        offset: const Offset(
+                                                          5.0,
+                                                          .250,
+                                                        ),
+                                                        blurRadius: 10.0,
+                                                        spreadRadius: 1.0,
+                                                      ),
+                                                      BoxShadow(
+                                                        color: Colors
+                                                            .grey.shade200,
+                                                        offset: const Offset(
+                                                          5.0,
+                                                          0.0,
+                                                        ),
+                                                        blurRadius: 10.0,
+                                                        spreadRadius: 2.0,
+                                                      ), //BoxShadow
+                                                    ],
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .stretch,
+                                                    children: [
+                                                      SizedBox(
+                                                        width: 120,
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceAround,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            AppText(
+                                                              text: item
+                                                                  .variantName!,
+                                                              fontSize: 16,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              textAlign: null,
+                                                            ),
+                                                            spacer30, spacer20,
+                                                            Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Text(
+                                                                  "₹" +
+                                                                      item.sizeVariant!
+                                                                          .price
+                                                                          .toString(),
+                                                                  style:
+                                                                      priceHeading,
+                                                                ),
+                                                                Text(
+                                                                  "₹ " +
+                                                                      item.sizeVariant!
+                                                                          .price
+                                                                          .toString(),
+                                                                  style:
+                                                                      sellingPriceHeading,
+                                                                ),
+                                                              ],
+                                                            ),
 
-                                     itemCount:
-                                     widget
-                                         .groceryItem.quantityType.length,
-                                     itemBuilder: (context, index){
-                                       var item =
-                                       widget
-                                           .groceryItem.quantityType[index];
-                                       return GestureDetector(
-                                           onTap: () {
+                                                            SizedBox(
+                                                              height: 10,
+                                                            ),
 
-                                           },
-                                           child:Container(
-                                             height: 160,
-                                             width: double.infinity,
-                                             padding: EdgeInsets.all(10),
-                                             margin: EdgeInsets.symmetric(vertical: 8,horizontal: 8),
+                                                            ///remove button
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceEvenly,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            ///image
+                                                            Center(
+                                                                child:
+                                                                    Container(
+                                                              height: 80,
+                                                              width: 120,
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                borderRadius: BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            5)),
+                                                                image:
+                                                                    DecorationImage(
+                                                                  fit: BoxFit
+                                                                      .fill,
+                                                                  image: NetworkImage(
+                                                                      "${AppRemoteRoutes.baseUrl}${widget.groceryItem.thumbnail}"),
+                                                                ),
+                                                              ),
+                                                            )),
 
-                                             decoration: BoxDecoration(
-                                               color: Colors.white,
-                                               borderRadius: BorderRadius.all(Radius.circular(10),),
-                                               border: Border.all(
-                                                   color: Colors.grey.shade100
-                                               ),
-                                               boxShadow: [
-                                                 BoxShadow(
-                                                   color: Colors.grey.shade200,
-                                                   offset: const Offset(
-                                                     10.0,
-                                                     1.50,
-                                                   ),
-                                                   blurRadius: 10.0,
-                                                   spreadRadius: 2.0,
-                                                 ), BoxShadow(
-                                                   color: Colors.grey.shade50,
-                                                   offset: const Offset(
-                                                     5.0,
-                                                     .250,
-                                                   ),
-                                                   blurRadius: 10.0,
-                                                   spreadRadius: 1.0,
-                                                 ),
-                                                 BoxShadow(
-                                                   color: Colors.grey.shade200,
-                                                   offset: const Offset(
-                                                     5.0,
-                                                     0.0,
-                                                   ),
-                                                   blurRadius: 10.0,
-                                                   spreadRadius: 2.0,
-                                                 ), //BoxShadow
-                                               ],
-                                             ),
-                                             child: Row(
-                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                               crossAxisAlignment: CrossAxisAlignment.stretch,
-                                               children: [
-                                                 SizedBox(
-                                                   width: 120,
-                                                   child: Column(
-                                                     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                     crossAxisAlignment: CrossAxisAlignment.start,
+                                                            spacer20,
+                                                            // Obx(() =>
+                                                            Obx(() {
+                                                              var cartItem = cartController
+                                                                  .checkCartContains(
+                                                                      variant:
+                                                                          item,
+                                                                      product:
+                                                                          widget
+                                                                              .groceryItem);
+                                                              print(
+                                                                  "======CONTAINS cartItem ${cartItem?.qty}");
+                                                              return cartController
+                                                                          .addCartResponse
+                                                                          .value
+                                                                          .status ==
+                                                                      Status
+                                                                          .LOADING
+                                                                  ? Center(
+                                                                      child:
+                                                                          CircularProgressIndicator(),
+                                                                    )
+                                                                  : cartItem ==
+                                                                          null
+                                                                      ? ItemAddWidget(
+                                                                          onAmountChanged: () => cartController.addCart(
+                                                                              widget.groceryItem,
+                                                                              item,
+                                                                              1),
+                                                                        )
+                                                                      : ItemCounterWidget(
+                                                                          onDecrement:
+                                                                              () {
+                                                                            cartController.updateCartProductDetail(
+                                                                                product: widget.groceryItem,
+                                                                                increment: false,
+                                                                                qty: item);
+                                                                          },
+                                                                          onIncrement:
+                                                                              () {
+                                                                            cartController.updateCartProductDetail(
+                                                                                product: widget.groceryItem,
+                                                                                increment: true,
+                                                                                qty: item);
+                                                                          },
+                                                                          onAmountChanged:
+                                                                              (newAmount) {
+                                                                            // cartController.updateCartProduct(
+                                                                            //     product: product,
+                                                                            //     increment: increment);
+                                                                          },
+                                                                          quantity:
+                                                                              cartItem.qty,
+                                                                        );
+                                                            })
 
-                                                     children: [
+                                                            // : ItemAddWidget()
+                                                            // )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ));
+                                          }),
+                                      SizedBox(
+                                        height: 400,
+                                        child: Obx(
+                                          () => controller.expandResponse.value
+                                                      .status ==
+                                                  Status.LOADING
+                                              ? Center(
+                                                  child:
+                                                      CircularProgressIndicator(),
+                                                )
+                                              : getProductDetails(
+                                                  "product details",
+                                                  controller
+                                                          .expandResponse
+                                                          .value
+                                                          .data
+                                                          ?.description ??
+                                                      ""),
+                                        ),
+                                      ),
+                                    ]),
+                              ),
 
-                                                       AppText(
-                                                         text: item.variantName!,
-                                                         fontSize: 16,
-                                                         fontWeight: FontWeight.w600,
-                                                         textAlign: null,
-                                                       ),
-                                                       spacer30,spacer20,
-                                                       Column(
-                                                         crossAxisAlignment:CrossAxisAlignment.start,
-                                                         children: [
-                                                           Text("₹"+item.sizeVariant!.price.toString(),style: priceHeading,),
-                                                           Text("₹ "+item.sizeVariant!.price.toString(),style: sellingPriceHeading,),
-                                                         ],
-                                                       ),
+                              spacer30,
+                            ]),
 
-                                                       SizedBox(
-                                                         height: 10,
-                                                       ),
-
-                                                       ///remove button
-                                                     ],
-                                                   ),
-                                                 ),
-
-                                                 SizedBox(
-                                                   child: Column(
-                                                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                     crossAxisAlignment: CrossAxisAlignment.center,
-                                                     children: [
-                                                       ///image
-                                                       Center(child:  Container(
-                                                         height: 80,
-                                                         width: 120,
-                                                         decoration: BoxDecoration(
-                                                           borderRadius: BorderRadius.all(Radius.circular(5)),
-                                                           image: DecorationImage(
-                                                             fit:BoxFit.fill ,
-                                                             image: NetworkImage(
-                                                                 "${AppRemoteRoutes.baseUrl}${widget.groceryItem.thumbnail}"
-                                                             ),
-                                                           ),
-                                                         ),
-                                                       )),
-
-                                                       spacer20,
-                                                       Obx(() => controller.quantityCount>=1?
-                                                       ItemCounterWidget(
-                                                         onAmountChanged: (newAmount) {
-                                                           controller.changeTotal();
-                                                         },
-                                                       ):ItemAddWidget())
-
-                                                     ],
-                                                   ),
-                                                 ),
-                                               ],
-                                             ),
-                                           )
-                                       );
-
-                                     }
-
-
-                                 ),
-                                 SizedBox(
-                                   height: 400,
-                                   child: Obx( () => controller.expandResponse.value.status ==
-                                       Status.LOADING
-                                       ? Center(
-                                     child: CircularProgressIndicator(),
-                                   )
-                                       :
-                                   getProductDetails(
-                                       "product details",
-                                       controller.expandResponse.value
-                                           .data?.description ??
-                                           ""),
-                                   ),
-                                 ),
-                               ]),
-                         ),
-
-
-                         spacer30,
-
-
-                             ]),
-
-
-
-
-                    /*SizedBox(
+                        /*SizedBox(
                       height: MediaQuery.of(context).size.height * 0.6,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -432,16 +531,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
                         ),
                       ),
                     ),*/
-            ),
-                    spacer30,
+                      ),
+                      spacer30,
 
-                    spacer30
-
-
-          ],
-        ),
-              ),
-        /*bottomNavigationBar:  Container(
+                      spacer30
+                    ],
+                  ),
+                ),
+                /*bottomNavigationBar:  Container(
             padding: EdgeInsets.only(bottom: 8, left: 25, right: 25),
             child: Obx(() =>
             cartController.addCartResponse.value.status ==
@@ -461,8 +558,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
                     controller.quantityCount.value);
               },
             ))),*/
-        ///bottom navigation bar to show the go to cart button
-       /* bottomNavigationBar: cartController.cartList.value?.data.total==null?
+                ///bottom navigation bar to show the go to cart button
+                /* bottomNavigationBar: cartController.cartList.value?.data.total==null?
         SizedBox(height: 0,):
         GestureDetector(
           onTap: ()=>Get.toNamed(AppRemoteRoutes.cart),
@@ -518,57 +615,58 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
           ),
         )
       */
-      ),
-            Positioned(
-                bottom: 18,
-                left: 10,
-                right: 10,
-                height: 50,
-                // padding: EdgeInsets.only(bottom: 8, left: 25, right: 25),
-                // p: Alignment.bottomCenter,
-                child: Obx(() =>
-                cartController.getCartResponse.value.status == Status.LOADING
-                    ?
-                     SizedBox(
-                    height: 102,
-                    )
-                    :cartController.getCartResponse.value.data!.data.products
-                    .isEmpty
-                    ? controller.quantityCount>=1?
-                SizedBox(
-                    height: 102,
-                    child: getCheckoutButton(context))
-                    : Center(
-                    child: SizedBox(),
-                ):Center(
-                  child: SizedBox(),
-                )))
-          ]))
-    );
+              ),
+              Positioned(
+                  bottom: 18,
+                  left: 10,
+                  right: 10,
+                  height: 50,
+                  // padding: EdgeInsets.only(bottom: 8, left: 25, right: 25),
+                  // p: Alignment.bottomCenter,
+                  child: Obx(() =>
+                          // cartController.getCartResponse.value.status == Status.LOADING
+                          //     ?
+                          //      SizedBox(
+                          //     height: 102,
+                          //     )
+                          //     :cartController.getCartResponse.value.data!.data.products
+                          //     .isEmpty
+                          //     ? controller.quantityCount>=1?
+                          SizedBox(
+                              height: 102, child: getCheckoutButton(context))
+                      //     : Center(
+                      //     child: SizedBox(),
+                      // ):Center(
+                      //   child: SizedBox(),
+                      // )
+                      ))
+            ])));
   }
+
   Widget getCheckoutButton(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        cartController.addCart(
-            widget.groceryItem,
-            controller.selectedQuantity.value!,
-            controller.quantityCount.value);
+        cartController.addCart(widget.groceryItem,
+            controller.selectedQuantity.value!, controller.quantityCount.value);
       },
       child: Container(
           alignment: Alignment.center,
           height: 30,
           decoration: BoxDecoration(
               color: AppColor.rose_red.shade600,
-              borderRadius:BorderRadius.all(Radius.circular(10)
-              )
+              borderRadius: BorderRadius.all(Radius.circular(10))),
+          padding: EdgeInsets.symmetric(
+            horizontal: 10,
           ),
-          padding: EdgeInsets.symmetric(horizontal: 10, ),
-          child:Row(
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // total items
-              BigText(text: cartController.getCartResponse.value
-                  .data!.data.products.length.toString()+" items",
+              BigText(
+                text: cartController
+                        .getCartResponse.value.data?.data.products.length
+                        .toString() ??
+                    "" + " items",
                 color: Colors.white,
                 size: 15,
               ),
@@ -577,45 +675,44 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
                 indent: 18,
                 endIndent: 18,
                 thickness: 2,
-
               ),
               //total amount
-              BigText(text: cartController.getCartResponse.value
-                  .data!.data.total.toString(),
+              BigText(
+                text: cartController.getCartResponse.value.data?.data.total
+                        .toString() ??
+                    "",
                 color: Colors.white,
                 size: 15,
               ),
               spacerW30,
-              BigText(text: "add To Cart",
+              BigText(
+                text: "add To Cart",
                 color: Colors.white,
                 size: 15,
-
               ),
-
             ],
-          )
-      ),
+          )),
     );
   }
+
   Widget getCheckoutButtoN() {
     return GestureDetector(
-      onTap: () {
-
-      },
+      onTap: () {},
       child: Container(
           alignment: Alignment.center,
           height: 30,
           decoration: BoxDecoration(
               color: AppColor.rose_red.shade700,
-              borderRadius:BorderRadius.all(Radius.circular(10)
-              )
+              borderRadius: BorderRadius.all(Radius.circular(10))),
+          padding: EdgeInsets.symmetric(
+            horizontal: 10,
           ),
-          padding: EdgeInsets.symmetric(horizontal: 10, ),
-          child:Row(
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // total items
-              BigText(text: "0 items",
+              BigText(
+                text: "0 items",
                 color: Colors.white,
                 size: 15,
               ),
@@ -624,23 +721,21 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
                 indent: 18,
                 endIndent: 18,
                 thickness: 2,
-
               ),
               //total amount
-              BigText(text: "0.0",
+              BigText(
+                text: "0.0",
                 color: Colors.white,
                 size: 15,
               ),
               spacerW30,
-              BigText(text: "Go To CART",
+              BigText(
+                text: "Go To CART",
                 color: Colors.white,
                 size: 15,
-
               ),
-
             ],
-          )
-      ),
+          )),
     );
   }
 
@@ -740,27 +835,33 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
     );
   }*/
 
-  getImageHeaderWidget(ProductEntity item){
+  getImageHeaderWidget(ProductEntity item) {
     return Container(
-        height: 250,
-        decoration: BoxDecoration(
-            image: DecorationImage(
-                fit:BoxFit.fill ,
-                image: NetworkImage(
-                  "${AppConstants.imagePath}${item!.thumbnail ?? " "}",
-                )
-            )
-        ),
+      height: 250,
+      decoration: BoxDecoration(
+          image: DecorationImage(
+              fit: BoxFit.fill,
+              image: NetworkImage(
+                "${AppConstants.imagePath}${item!.thumbnail ?? " "}",
+              ))),
     );
   }
 
-  getProductDetails(String label,String data){
+  getProductDetails(String label, String data) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: 20,),
-        BigText( text: label,color: Colors.black,size: 20,),
-        SizedBox(height: 10,),
+        SizedBox(
+          height: 20,
+        ),
+        BigText(
+          text: label,
+          color: Colors.black,
+          size: 20,
+        ),
+        SizedBox(
+          height: 10,
+        ),
         Text(data)
       ],
     );
@@ -799,7 +900,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
     );
   }
 
- /* Widget getProductDataRowWidget(String label,
+  /* Widget getProductDataRowWidget(String label,
       {Widget? customWidget, required Widget data}) {
     return ExpansionTile(
       title: Container(
@@ -832,4 +933,3 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
     );
   }*/
 }
-

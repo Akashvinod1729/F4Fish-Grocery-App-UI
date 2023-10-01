@@ -1,8 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:grocery_app/data/remote/model/product_model.dart';
+import 'package:grocery_app/domain/entity/quantity_cart_model.dart';
+
 import '../../presentation/helpers/enums.dart';
 import 'ProductEntity.dart';
-
 
 class CartEntity {
   CartEntity({
@@ -67,7 +68,7 @@ class CartProduct extends Equatable {
   int? id;
   double price;
   ProductEntity product;
-  QuantityVariant qtyType;
+  List<QuantityCartModel> qtyType;
   ProductStatus productStatus;
   int quantity;
   double subtotal;
@@ -77,7 +78,8 @@ class CartProduct extends Equatable {
         id: json["id"],
         price: json["price"].toDouble(),
         product: ProductModel.fromJson(json["product"]),
-        qtyType: QuantityVariant.fromJson(json["qty_type"]),
+        qtyType: List<QuantityCartModel>.from(
+            json['qty_type'].map((e) => QuantityCartModel.fromJson(e))),
         productStatus: getProductStatusFromJson(json["product_status"]),
         quantity: json["quantity"],
         subtotal: json["subtotal"].toDouble(),
@@ -88,7 +90,7 @@ class CartProduct extends Equatable {
         "id": id,
         "price": price,
         "product": product.id,
-        "qty_type": qtyType.id,
+        "qty_type": List<dynamic>.from(qtyType.map((e) => e.toJson())),
         "product_status": productStatus.name,
         "quantity": quantity,
         "subtotal": subtotal,
