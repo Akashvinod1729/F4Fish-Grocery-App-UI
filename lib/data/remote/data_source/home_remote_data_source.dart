@@ -6,7 +6,7 @@ import 'package:grocery_app/domain/entity/home_entity.dart';
 
 abstract class HomeRemoteDataSource {
   Future<HomeEntity> getHome(int region);
-  Future<List<RegionModel>> getAllLocations();
+  Future<List<RegionModel>> getAllLocations({String? pinCode});
   Future<RegionModel> getNearestLocation(String lat, String long);
 }
 
@@ -22,8 +22,9 @@ class HomeRemoteDataSourceImpl extends HomeRemoteDataSource {
   }
 
   @override
-  Future<List<RegionModel>> getAllLocations() async {
-    final data = await apiProvider.get(AppRemoteRoutes.locations);
+  Future<List<RegionModel>> getAllLocations({String? pinCode}) async {
+    final data =
+        await apiProvider.get("${AppRemoteRoutes.locations}?search=$pinCode");
     return List<RegionModel>.from(
         data['data'].map((e) => RegionModel.fromJson(e)));
   }

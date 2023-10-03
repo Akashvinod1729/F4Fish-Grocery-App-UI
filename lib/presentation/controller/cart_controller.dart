@@ -34,7 +34,7 @@ class CartController extends GetxController {
     var found = cartListTemp
         .firstWhereOrNull((element) => element.product.id == product.id);
     if (found != null) {
-      print("found ${found.qtyType.first.variant.id} ${variant.id}");
+      // print("found ${found.qtyType.first.variant.id} ${variant.id}");
       return found.qtyType
           .firstWhereOrNull((element) => element.variant.id == variant.id);
     }
@@ -102,6 +102,7 @@ class CartController extends GetxController {
     required QuantityVariant qty,
   }) {
     debugPrint("--UPDATING PRODUCT--");
+    bool skip = false;
     var haveOnCart = cartList.value?.data.products
         .firstWhereOrNull((element) => element.product.id == product.id);
     if (haveOnCart != null) {
@@ -123,11 +124,14 @@ class CartController extends GetxController {
           q.qty = q.qty - 1;
         }
         if (data.quantity <= 0) {
+          skip = true;
           deleteCart(data.id!);
         }
       }
-      cartList.refresh();
-      updateCart();
+      if (!skip) {
+        cartList.refresh();
+        updateCart();
+      }
     }
   }
 
@@ -135,11 +139,20 @@ class CartController extends GetxController {
     debugPrint("--CART PRODUCT ADDING--");
     addCartResponse.value = ResponseClassify.loading();
     try {
+      List<QuantityCartModel> qtyList = [];
+      var getExisting = cartList.value?.data.products
+          .firstWhereOrNull((element) => element.product.id == product.id);
+      if (getExisting != null) {
+        qtyList.addAll(getExisting.qtyType);
+        qtyList.add(QuantityCartModel(qty: quantity, variant: qty));
+      } else {
+        qtyList.add(QuantityCartModel(qty: quantity, variant: qty));
+      }
       addCartResponse.value = ResponseClassify<CartData>.completed(
           await addCartUseCase.call(CartData(
         products: [
           CartProduct(
-              qtyType: [QuantityCartModel(qty: quantity, variant: qty)],
+              qtyType: qtyList,
               product: product,
               quantity: quantity,
               subtotal: 0.0,
@@ -187,10 +200,11 @@ class CartController extends GetxController {
     debugPrint("--CART PRODUCT DELETING--");
     deleteCartResponse.value = ResponseClassify.loading();
     try {
-      cartList.value!.data.products.removeWhere((element) => element.id == id);
+      // cartList.value!.data.products.removeWhere((element) => element.id == id);
 
       deleteCartResponse.value = ResponseClassify<NoParams>.completed(
           await deleteCartUseCase.call(id));
+      cartList.refresh();
     } catch (e) {
       debugPrint(e.toString());
       deleteCartResponse.value = ResponseClassify.error(e.toString());

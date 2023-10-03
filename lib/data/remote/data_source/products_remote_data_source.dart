@@ -40,8 +40,10 @@ class ProductRemoteDataUseCaseImpl extends ProductRemoteDataUseCase {
   }
 
   @override
-  Future<CartProduct> deleteCartProduct(int id) async {
-    final res = await apiProvider.delete(AppRemoteRoutes.cart);
+  Future<String> deleteCartProduct(int id) async {
+    final res = await apiProvider.delete(
+      "${AppRemoteRoutes.cart}$id/",
+    );
     return res['status'];
   }
 

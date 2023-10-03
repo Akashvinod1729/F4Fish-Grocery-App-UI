@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:grocery_app/common_widgets/app_text.dart';
@@ -146,212 +147,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
                                           itemBuilder: (context, index) {
                                             var item = widget.groceryItem
                                                 .quantityType[index];
-                                            return GestureDetector(
-                                                onTap: () {},
-                                                child: Container(
-                                                  height: 160,
-                                                  width: double.infinity,
-                                                  padding: EdgeInsets.all(10),
-                                                  margin: EdgeInsets.symmetric(
-                                                      vertical: 8,
-                                                      horizontal: 8),
-                                                  decoration: BoxDecoration(
-                                                    color: Colors.white,
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                      Radius.circular(10),
-                                                    ),
-                                                    border: Border.all(
-                                                        color: Colors
-                                                            .grey.shade100),
-                                                    boxShadow: [
-                                                      BoxShadow(
-                                                        color: Colors
-                                                            .grey.shade200,
-                                                        offset: const Offset(
-                                                          10.0,
-                                                          1.50,
-                                                        ),
-                                                        blurRadius: 10.0,
-                                                        spreadRadius: 2.0,
-                                                      ),
-                                                      BoxShadow(
-                                                        color:
-                                                            Colors.grey.shade50,
-                                                        offset: const Offset(
-                                                          5.0,
-                                                          .250,
-                                                        ),
-                                                        blurRadius: 10.0,
-                                                        spreadRadius: 1.0,
-                                                      ),
-                                                      BoxShadow(
-                                                        color: Colors
-                                                            .grey.shade200,
-                                                        offset: const Offset(
-                                                          5.0,
-                                                          0.0,
-                                                        ),
-                                                        blurRadius: 10.0,
-                                                        spreadRadius: 2.0,
-                                                      ), //BoxShadow
-                                                    ],
-                                                  ),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .stretch,
-                                                    children: [
-                                                      SizedBox(
-                                                        width: 120,
-                                                        child: Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceAround,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            AppText(
-                                                              text: item
-                                                                  .variantName!,
-                                                              fontSize: 16,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                              textAlign: null,
-                                                            ),
-                                                            spacer30, spacer20,
-                                                            Column(
-                                                              crossAxisAlignment:
-                                                                  CrossAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                Text(
-                                                                  "₹" +
-                                                                      item.sizeVariant!
-                                                                          .price
-                                                                          .toString(),
-                                                                  style:
-                                                                      priceHeading,
-                                                                ),
-                                                                Text(
-                                                                  "₹ " +
-                                                                      item.sizeVariant!
-                                                                          .price
-                                                                          .toString(),
-                                                                  style:
-                                                                      sellingPriceHeading,
-                                                                ),
-                                                              ],
-                                                            ),
-
-                                                            SizedBox(
-                                                              height: 10,
-                                                            ),
-
-                                                            ///remove button
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      SizedBox(
-                                                        child: Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceEvenly,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            ///image
-                                                            Center(
-                                                                child:
-                                                                    Container(
-                                                              height: 80,
-                                                              width: 120,
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                borderRadius: BorderRadius
-                                                                    .all(Radius
-                                                                        .circular(
-                                                                            5)),
-                                                                image:
-                                                                    DecorationImage(
-                                                                  fit: BoxFit
-                                                                      .fill,
-                                                                  image: NetworkImage(
-                                                                      "${AppRemoteRoutes.baseUrl}${widget.groceryItem.thumbnail}"),
-                                                                ),
-                                                              ),
-                                                            )),
-
-                                                            spacer20,
-                                                            // Obx(() =>
-                                                            Obx(() {
-                                                              var cartItem = cartController
-                                                                  .checkCartContains(
-                                                                      variant:
-                                                                          item,
-                                                                      product:
-                                                                          widget
-                                                                              .groceryItem);
-                                                              print(
-                                                                  "======CONTAINS cartItem ${cartItem?.qty}");
-                                                              return cartController
-                                                                          .addCartResponse
-                                                                          .value
-                                                                          .status ==
-                                                                      Status
-                                                                          .LOADING
-                                                                  ? Center(
-                                                                      child:
-                                                                          CircularProgressIndicator(),
-                                                                    )
-                                                                  : cartItem ==
-                                                                          null
-                                                                      ? ItemAddWidget(
-                                                                          onAmountChanged: () => cartController.addCart(
-                                                                              widget.groceryItem,
-                                                                              item,
-                                                                              1),
-                                                                        )
-                                                                      : ItemCounterWidget(
-                                                                          onDecrement:
-                                                                              () {
-                                                                            cartController.updateCartProductDetail(
-                                                                                product: widget.groceryItem,
-                                                                                increment: false,
-                                                                                qty: item);
-                                                                          },
-                                                                          onIncrement:
-                                                                              () {
-                                                                            cartController.updateCartProductDetail(
-                                                                                product: widget.groceryItem,
-                                                                                increment: true,
-                                                                                qty: item);
-                                                                          },
-                                                                          onAmountChanged:
-                                                                              (newAmount) {
-                                                                            // cartController.updateCartProduct(
-                                                                            //     product: product,
-                                                                            //     increment: increment);
-                                                                          },
-                                                                          quantity:
-                                                                              cartItem.qty,
-                                                                        );
-                                                            })
-
-                                                            // : ItemAddWidget()
-                                                            // )
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ));
+                                            return ProductSubItems(
+                                              item: item,
+                                              entity: widget.groceryItem,
+                                            );
                                           }),
                                       SizedBox(
                                         height: 400,
@@ -932,4 +731,164 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen>
       children: [data],
     );
   }*/
+}
+
+class ProductSubItems extends StatelessWidget {
+  final QuantityVariant item;
+  final ProductEntity entity;
+  const ProductSubItems({required this.item, required this.entity});
+
+  @override
+  Widget build(BuildContext context) {
+    final cartController = Get.find<CartController>();
+    return GestureDetector(
+        onTap: () {},
+        child: Container(
+          height: 160,
+          width: double.infinity,
+          padding: EdgeInsets.all(10),
+          margin: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(
+              Radius.circular(10),
+            ),
+            border: Border.all(color: Colors.grey.shade100),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.shade200,
+                offset: const Offset(
+                  10.0,
+                  1.50,
+                ),
+                blurRadius: 10.0,
+                spreadRadius: 2.0,
+              ),
+              BoxShadow(
+                color: Colors.grey.shade50,
+                offset: const Offset(
+                  5.0,
+                  .250,
+                ),
+                blurRadius: 10.0,
+                spreadRadius: 1.0,
+              ),
+              BoxShadow(
+                color: Colors.grey.shade200,
+                offset: const Offset(
+                  5.0,
+                  0.0,
+                ),
+                blurRadius: 10.0,
+                spreadRadius: 2.0,
+              ), //BoxShadow
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SizedBox(
+                width: 120,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    AppText(
+                      text: item.variantName!,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      textAlign: null,
+                    ),
+                    spacer30, spacer20,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "₹" + item.sizeVariant!.price.toString(),
+                          style: priceHeading,
+                        ),
+                        Text(
+                          "₹ " + item.sizeVariant!.price.toString(),
+                          style: sellingPriceHeading,
+                        ),
+                      ],
+                    ),
+
+                    SizedBox(
+                      height: 10,
+                    ),
+
+                    ///remove button
+                  ],
+                ),
+              ),
+              SizedBox(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    ///image
+                    Center(
+                        child: Container(
+                      height: 80,
+                      width: 120,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                      ),
+                      child: CachedNetworkImage(
+                        errorWidget: (ctx, error, child) =>
+                            Image.asset("assets/icons/logo.png"),
+                        imageUrl:
+                            "${AppRemoteRoutes.baseUrl}${item.variantImage}",
+                      ),
+                    )),
+
+                    spacer20,
+                    // Obx(() =>
+                    Obx(() {
+                      var cartItem = cartController.checkCartContains(
+                          variant: item, product: entity);
+                      print("======CONTAINS cartItem ${cartItem?.qty}");
+                      return cartController.addCartResponse.value.status ==
+                              Status.LOADING
+                          ? Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : cartItem == null
+                              ? ItemAddWidget(
+                                  onAmountChanged: () =>
+                                      cartController.addCart(entity, item, 1),
+                                )
+                              : ItemCounterWidget(
+                                  onDecrement: () {
+                                    cartController.updateCartProductDetail(
+                                        product: entity,
+                                        increment: false,
+                                        qty: item);
+                                  },
+                                  onIncrement: () {
+                                    cartController.updateCartProductDetail(
+                                        product: entity,
+                                        increment: true,
+                                        qty: item);
+                                  },
+                                  onAmountChanged: (newAmount) {
+                                    // cartController.updateCartProduct(
+                                    //     product: product,
+                                    //     increment: increment);
+                                  },
+                                  quantity: cartItem.qty,
+                                );
+                    })
+
+                    // : ItemAddWidget()
+                    // )
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ));
+  }
 }

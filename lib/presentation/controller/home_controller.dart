@@ -9,16 +9,16 @@ import 'package:grocery_app/data/remote/model/region_model.dart';
 import 'package:grocery_app/domain/entity/home_entity.dart';
 import 'package:grocery_app/domain/usecase/home_use_case.dart';
 import 'package:location/location.dart';
+
 import '../../core/custom_exception.dart';
 import '../../domain/usecase/get_all_locations.dart';
 import '../../domain/usecase/location_use_case.dart';
-import '../../domain/usecase/offer_usecase.dart';
 import '../routes.dart';
 
 class HomeController extends GetxController {
   // final CategoryUseCase categoryUseCase;
   // final SubCategoryUseCase subCategoryUseCase;
-   //final OfferUserCase offerUserCase;
+  //final OfferUserCase offerUserCase;
   //
   // HomeController(this.categoryUseCase, this.subCategoryUseCase, this.offerUserCase) {
   //   getCategories();
@@ -60,15 +60,18 @@ class HomeController extends GetxController {
     getHome();
     getLocalLocation();
   }
-
+  /*
+  change pincode varible value search
+   */
+  String? pincode;
   final response = ResponseClassify<HomeEntity>.loading().obs;
   final allLocationResponse = ResponseClassify<List<RegionModel>>.loading().obs;
   final nearestLocationResponse = ResponseClassify<RegionModel>.loading().obs;
   getAllLocation() async {
     allLocationResponse.value = ResponseClassify.loading();
     try {
-      allLocationResponse.value = ResponseClassify.completed(
-          await allLocationsUseCase.call(NoParams()));
+      allLocationResponse.value =
+          ResponseClassify.completed(await allLocationsUseCase.call(pincode));
       print("products length : ${response.value.data?.products.length}");
     } on UnauthorisedException {
       GetStorage storage = GetStorage();

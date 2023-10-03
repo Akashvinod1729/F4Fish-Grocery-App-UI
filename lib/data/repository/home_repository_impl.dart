@@ -14,8 +14,8 @@ class HomeRepositoryImpl extends HomeRepository {
   }
 
   @override
-  Future<List<RegionModel>> getAllLocations() {
-    return dataSource.getAllLocations();
+  Future<List<RegionModel>> getAllLocations({String? pinCode}) {
+    return dataSource.getAllLocations(pinCode: pinCode);
   }
 
   @override

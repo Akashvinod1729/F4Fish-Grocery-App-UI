@@ -3,14 +3,14 @@ import 'package:grocery_app/data/remote/model/region_model.dart';
 
 import '../repository/home_repoistory.dart';
 
-class GetAllLocationsUseCase extends UseCase<List<RegionModel>, NoParams> {
+class GetAllLocationsUseCase extends UseCase<List<RegionModel>, String?> {
   final HomeRepository repository;
 
   GetAllLocationsUseCase(this.repository);
 
   @override
-  Future<List<RegionModel>> call(NoParams params) {
-    return repository.getAllLocations();
+  Future<List<RegionModel>> call(String? params) {
+    return repository.getAllLocations(pinCode: params);
   }
 }
 
