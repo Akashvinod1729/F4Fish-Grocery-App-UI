@@ -28,7 +28,7 @@ class ProductRepositoryImpl extends ProductRepository {
   }
 
   @override
-  Future<void> deleteCartProduct(int id) {
+  Future<CartData> deleteCartProduct(int id) {
     return dataSource.deleteCartProduct(id);
   }
 

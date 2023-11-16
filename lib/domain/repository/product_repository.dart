@@ -10,7 +10,7 @@ abstract class ProductRepository {
   Future<ProductEntity> getProductDetails(int id);
   Future<CartEntity> getCart();
   Future<CartData> addCart(CartData data);
-  Future<void> deleteCartProduct(int id);
+  Future<CartData> deleteCartProduct(int id);
   Future<void> orderProducts(OrderCreateModel orderCreateModel);
   Future<OrderModel> getOrders();
   Future<void> updateOrders(String orderId, Map<String, dynamic> data);

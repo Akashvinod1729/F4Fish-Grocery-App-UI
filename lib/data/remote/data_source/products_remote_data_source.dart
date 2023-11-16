@@ -14,7 +14,7 @@ abstract class ProductRemoteDataUseCase {
   Future<ProductEntity> getProductDetail(int id);
   Future<CartEntity> getCart();
   Future<CartData> addCart(CartData data);
-  Future<void> deleteCartProduct(int id);
+  Future<CartData> deleteCartProduct(int id);
   Future<void> orderProducts(OrderCreateModel orderCreateModel);
   Future<OrderModel> getOrders();
   Future<void> updateOrders(String orderId, Map<String, dynamic> data);
@@ -40,11 +40,11 @@ class ProductRemoteDataUseCaseImpl extends ProductRemoteDataUseCase {
   }
 
   @override
-  Future<String> deleteCartProduct(int id) async {
+  Future<CartData> deleteCartProduct(int id) async {
     final res = await apiProvider.delete(
       "${AppRemoteRoutes.cart}$id/",
     );
-    return res['status'];
+    return CartData.fromJson(res);
   }
 
   @override

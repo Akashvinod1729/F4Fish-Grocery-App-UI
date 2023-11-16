@@ -69,9 +69,10 @@ class CartController extends GetxController {
     required QuantityVariant qty,
   }) {
     debugPrint("--UPDATING PRODUCT--");
-    if (cartList.value!.data.products.contains(product)) {
-      CartProduct data = cartList.value!.data.products
-          .firstWhere((element) => element.id == product.id);
+
+    if (cartListTemp.contains(product)) {
+      CartProduct data =
+          cartListTemp.firstWhere((element) => element.id == product.id);
       if (increment) {
         data.quantity = data.quantity + 1;
         var q = data.qtyType
@@ -86,13 +87,15 @@ class CartController extends GetxController {
             .firstWhereOrNull((element) => element.variant.id == qty.id);
         if (q != null) {
           q.qty = q.qty - 1;
-        }
-        if (data.quantity <= 0) {
-          deleteCart(data.id!);
+          if (q.qty <= 0) {
+            deleteCart(q.id!);
+          }
         }
       }
       cartList.refresh();
       updateCart();
+    } else {
+      print("no contains");
     }
   }
 
@@ -103,10 +106,11 @@ class CartController extends GetxController {
   }) {
     debugPrint("--UPDATING PRODUCT--");
     bool skip = false;
-    var haveOnCart = cartList.value?.data.products
+    var haveOnCart = cartListTemp
         .firstWhereOrNull((element) => element.product.id == product.id);
+    print("have on cart $haveOnCart ${cartList.value?.data.products.length}");
     if (haveOnCart != null) {
-      CartProduct data = cartList.value!.data.products
+      CartProduct data = cartListTemp
           .firstWhere((element) => element.product.id == product.id);
       if (increment) {
         data.quantity = data.quantity + 1;
@@ -122,10 +126,10 @@ class CartController extends GetxController {
             .firstWhereOrNull((element) => element.variant.id == qty.id);
         if (q != null) {
           q.qty = q.qty - 1;
-        }
-        if (data.quantity <= 0) {
-          skip = true;
-          deleteCart(data.id!);
+          if (q.qty <= 0) {
+            skip = true;
+            deleteCart(q.id!);
+          }
         }
       }
       if (!skip) {
@@ -185,6 +189,7 @@ class CartController extends GetxController {
     debugPrint("--CART PRODUCT UPDATING--");
     addCartResponse.value = ResponseClassify.loading();
     try {
+      cartList.value?.data.products = cartListTemp;
       addCartResponse.value = ResponseClassify<CartData>.completed(
           await addCartUseCase.call(cartList.value!.data));
       cartListTemp.clear();
@@ -198,13 +203,14 @@ class CartController extends GetxController {
 
   deleteCart(int id) async {
     debugPrint("--CART PRODUCT DELETING--");
-    deleteCartResponse.value = ResponseClassify.loading();
+    addCartResponse.value = ResponseClassify.loading();
     try {
       // cartList.value!.data.products.removeWhere((element) => element.id == id);
 
-      deleteCartResponse.value = ResponseClassify<NoParams>.completed(
-          await deleteCartUseCase.call(id));
-      cartList.refresh();
+      addCartResponse.value =
+          ResponseClassify.completed(await deleteCartUseCase.call(id));
+      cartListTemp.clear();
+      cartListTemp.addAll(addCartResponse.value.data?.products ?? []);
     } catch (e) {
       debugPrint(e.toString());
       deleteCartResponse.value = ResponseClassify.error(e.toString());

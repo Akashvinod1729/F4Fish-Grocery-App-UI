@@ -23,8 +23,14 @@ class HomeRemoteDataSourceImpl extends HomeRemoteDataSource {
 
   @override
   Future<List<RegionModel>> getAllLocations({String? pinCode}) async {
-    final data =
-        await apiProvider.get("${AppRemoteRoutes.locations}?search=$pinCode");
+    String url = "";
+    if (pinCode == null) {
+      url = AppRemoteRoutes.locations;
+    } else {
+      url = "${AppRemoteRoutes.locations}?search=$pinCode";
+    }
+
+    final data = await apiProvider.get(url);
     return List<RegionModel>.from(
         data['data'].map((e) => RegionModel.fromJson(e)));
   }

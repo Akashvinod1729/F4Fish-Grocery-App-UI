@@ -67,11 +67,11 @@ class HomeController extends GetxController {
   final response = ResponseClassify<HomeEntity>.loading().obs;
   final allLocationResponse = ResponseClassify<List<RegionModel>>.loading().obs;
   final nearestLocationResponse = ResponseClassify<RegionModel>.loading().obs;
-  getAllLocation() async {
+  getAllLocation({String? pinCode}) async {
     allLocationResponse.value = ResponseClassify.loading();
     try {
       allLocationResponse.value =
-          ResponseClassify.completed(await allLocationsUseCase.call(pincode));
+          ResponseClassify.completed(await allLocationsUseCase.call(pinCode));
       print("products length : ${response.value.data?.products.length}");
     } on UnauthorisedException {
       GetStorage storage = GetStorage();
